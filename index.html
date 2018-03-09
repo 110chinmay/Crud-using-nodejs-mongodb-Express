@@ -1,0 +1,216 @@
+<!-- <!DOCTYPE html>
+<html>
+    <head>
+        <title>Intro to Node and MongoDB</title>
+    </head>
+
+    <body>
+        <h1>Into to Node and MongoDB</h1>
+        <form method="post" action="/addname">
+            <label>Enter Your Name</label><br>
+            <input type="text" name="firstName" placeholder="Enter first name..." required>
+            <input type="text" name="lastName" placeholder="Enter last name..." required>
+            <input type="submit" value="Add Name">
+        </form>
+    </body>
+</html>
+ -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <style type="text/css">
+        .center{
+            margin: 0 auto;
+            align-items: center;
+            float: none;
+            text-align: center;
+            padding: 1%;
+        }
+        .top{
+            margin-top: 5%;
+            background-color: #a2a1a1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container top">
+        <h1 class="center">Login form</h1>
+        <div class="form-group">
+          <div class="col-xs-4 center">
+            <label for="ex3">User name</label>
+            <input class="form-control" id="usrName" type="text">
+          </div>
+          <div class="col-xs-4 center">
+            <label for="ex3">User Mobile</label>
+            <input class="form-control" id="usrMobile" type="text">
+          </div>
+          <div class="col-xs-4 center">
+            <label for="ex3">User Address</label>
+            <input class="form-control" id="usrAddress" type="text">
+          </div>
+          <div class="col-xs-4 center">
+                     <label for="sel1">Select state:</label>
+                        <select class="form-control" id="selData">
+                            <option></option>
+                            <option>Maharashtra</option>
+                            <option>Punjab</option>
+                            <option>Karnataka</option>
+                            <option>Orissa</option>
+                         </select>
+                </div>
+       <!--      <div class="checkbox center">
+                    <span><STRONG>Languages known</STRONG></span>
+                    <label><input type="checkbox" class="checkbox" value="html" id="html" name="data">Html</label>
+                    <label><input type="checkbox" class="checkbox" value="css" id="css" name="data">Css</label>
+                    <label><input type="checkbox" class="checkbox" value="javascript" id="javascript" name="data">Javascript</label>
+                </div>  --> 
+          <div class="col-xs-4 center">
+            <label for="ex3">password</label>
+            <input class="form-control" id="usrPassword" type="password">
+          </div>
+          <div class="col-xs-4 center">
+            <label for="ex3">Confirm password</label>
+            <input class="form-control" id="usrRePassword" type="password">
+          </div>
+          <div class="col-xs-4 center">
+                    <span><STRONG>Gender:</STRONG></span>
+                    <label><input type="radio" class="radio" name="gender" value="Male">Male</label>
+                    <label><input type="radio" class="radio" name="gender" value="Female">Female</label>
+        </div>
+          <div class="col-xs-4 center"> 
+            <button class="btn btn-primary" onclick="saveUsr();">Save</button>
+            <button class="btn btn-danger" onclick="signIn();">Home</button>
+          </div>
+    </div>
+</div>
+</body>
+<script src="https://cdn.rawgit.com/alertifyjs/alertify.js/v1.0.10/dist/js/alertify.js"></script>
+<script type="text/javascript">
+
+
+    function signIn(){
+        window.location.href = '/';
+    }
+
+    function saveUsr(){
+
+        var namePattern = /^[a-zA-Z '.-]*$/;
+        var emailValidation = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+        var usrName = $("#usrName").val();
+        var usrMobile = $("#usrMobile").val();
+        var usrAddress = $("#usrAddress").val();
+        var selData = $("#selData").val();
+        // var checkValue = document.querySelectorAll("input[type='checkbox']");
+        // var checkValue = $("input[name='data']:checked").val();
+        var usrPassword = $("#usrPassword").val();
+        var usrRePassword = $("#usrRePassword").val();
+        var radioValue = $("input[name='gender']:checked").val();
+        var arrData = [];
+        var data = [];
+      //    checkValue.forEach(function(checkValues){
+      //   arrData.push({ id: checkValues.id, checked: checkValues.checked });
+      // });
+
+      //    localStorage.setItem('checkValue', JSON.stringify(arrData));
+
+
+        if(usrName == '' || usrName == null || usrName == undefined)
+        {
+            alertify.error("Enter name, it cannot be blank");
+            $("#usrName").focus();
+            return false;
+        }
+        if (!namePattern.test(usrName))
+        {
+            alertify.error("Enter valid name");
+            $("#usrName").focus();
+            return false;
+        }
+        if (isNaN(usrMobile) || usrMobile.length != 10 || usrMobile == '' || usrMobile == null || usrMobile == undefined)
+        {
+            alertify.error("Enter valid phone number");
+            $("#usrMobile").focus();
+            return false;
+        }
+        if (usrAddress == '' || usrAddress == null || usrAddress == undefined)
+        {
+            alertify.error("Enter valid Address");
+            $("#usrAddress").focus();
+            return false;
+        }
+        if (selData == '')
+        {
+            alertify.error("Select state");
+            return false;
+        }
+        // if(checkValue =='' || checkValue == null || checkValue == undefined)
+        // {
+        //     alertify.error("Select language known");
+        //     return false;
+        // }
+        if (usrPassword == '' || usrPassword == null || usrPassword == undefined)
+        {
+            alertify.error("Enter valid Password");
+            $("#usrPassword").focus();
+            return false;
+        }
+        if (usrRePassword == '' || usrRePassword == null || usrRePassword == undefined)
+        {
+            alertify.error("Enter valid confirm password");
+            $("#usrRePassword").focus();
+            return false;
+        }
+        if(usrPassword != usrRePassword)
+        {
+            alertify.error("Passwords does not matches");
+            $("#usrPassword").focus();
+            return false;
+        }
+        if(radioValue =='' || radioValue == null || radioValue == undefined)
+        {
+            alertify.error("Enter gender");
+            return false;
+        }
+        else{
+
+            var params = {
+                usrName:usrName,
+                usrMobile:usrMobile,
+                usrAddress:usrAddress,
+                usrPassword:usrPassword,
+                selData:selData,
+                radioValue:radioValue
+            }
+
+
+        $.ajax({
+        url: '/addname',
+        type: 'post',
+        dataType: 'json',
+        data: params,
+        complete: function() {
+            alertify.success("Registered Successfully!");
+            $("#usrName").val("");
+            $("#usrMobile").val("");
+            $("#usrAddress").val("");
+            $("#usrPassword").val("");
+            $("#selData").val("");
+            $("#radioValue").toggleClass('hidden');
+
+        }
+
+    });
+        }
+    }
+    
+</script>
+</html>

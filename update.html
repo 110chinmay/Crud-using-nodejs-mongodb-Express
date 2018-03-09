@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <style type="text/css">
+        .center{
+            margin: 0 auto;
+            align-items: center;
+            float: none;
+            text-align: center;
+            padding: 1%;
+        }
+        .top{
+            margin-top: 5%;
+            background-color: #a2a1a1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container top">
+        <h1 class="center">Update form</h1>
+        <div class="form-group">
+          <div class="col-xs-4 center">
+            <label for="ex3">User name</label>
+            <input class="form-control" id="usrName" type="text">
+          </div>
+          <div class="col-xs-4 center">
+            <label for="ex3">User Mobile</label>
+            <input class="form-control" id="usrMobile" type="text">
+          </div>
+          <div class="col-xs-4 center">
+            <label for="ex3">User Address</label>
+            <input class="form-control" id="usrAddress" type="text">
+          </div>
+          <div class="col-xs-4 center">
+                     <label for="sel1">Select state:</label>
+                        <select class="form-control" id="selData">
+                            <option></option>
+                            <option>Maharashtra</option>
+                            <option>Punjab</option>
+                            <option>Karnataka</option>
+                            <option>Orissa</option>
+                         </select>
+                </div>
+          <div class="col-xs-4 center">
+                    <span><STRONG>Gender:</STRONG></span>
+                    <label><input type="radio" class="radio" name="gender" value="Male">Male</label>
+                    <label><input type="radio" class="radio" name="gender" value="Female">Female</label>
+        </div>
+          <div class="col-xs-4 center"> 
+            <button class="btn btn-primary" onclick="updateUsr();">Update</button>
+             <button class="btn btn-success" onclick="homeUsr();">Home</button>
+          </div>
+    </div>
+</div>
+</body>
+<script src="https://cdn.rawgit.com/alertifyjs/alertify.js/v1.0.10/dist/js/alertify.js"></script>
+<script type="text/javascript">
+
+var id;
+
+		  $(document).ready(function(){  
+
+		  	var url = window.location.href;
+			 id = url.substring(url.lastIndexOf('/') + 1);
+
+      $.ajax({
+        url: '/update.html/data/'+id+'',
+        type: 'get',
+        dataType: 'json',
+        complete: function(res) {
+        	var element = res.responseJSON[0];
+             	 $("input[type=radio][value=" + element.radioValue + "]").prop('checked', true);
+             	 $('#selData').val(element.selData);
+             	 $('#usrAddress').val(element.usrAddress);
+             	 $('#usrMobile').val(element.usrMobile);
+             	 $('#usrName').val(element.usrName);
+			
+        }
+      });
+  });
+
+
+	function homeUsr(){
+		 window.location.href = '/';
+	}
+
+    function updateUsr(){
+
+        var namePattern = /^[a-zA-Z '.-]*$/;
+        var emailValidation = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+        var usrName = $("#usrName").val();
+        var usrMobile = $("#usrMobile").val();
+        var usrAddress = $("#usrAddress").val();
+        var selData = $("#selData").val();
+        var usrPassword = $("#usrPassword").val();
+        var usrRePassword = $("#usrRePassword").val();
+        var radioValue = $("input[name='gender']:checked").val();
+        var arrData = [];
+        var data = [];
+
+
+        if(usrName == '' || usrName == null || usrName == undefined)
+        {
+            alertify.error("Enter name, it cannot be blank");
+            $("#usrName").focus();
+            return false;
+        }
+        if (!namePattern.test(usrName))
+        {
+            alertify.error("Enter valid name");
+            $("#usrName").focus();
+            return false;
+        }
+        if (isNaN(usrMobile) || usrMobile.length != 10 || usrMobile == '' || usrMobile == null || usrMobile == undefined)
+        {
+            alertify.error("Enter valid phone number");
+            $("#usrMobile").focus();
+            return false;
+        }
+        if (usrAddress == '' || usrAddress == null || usrAddress == undefined)
+        {
+            alertify.error("Enter valid Address");
+            $("#usrAddress").focus();
+            return false;
+        }
+        if (selData == '')
+        {
+            alertify.error("Select state");
+            return false;
+        }
+
+        if(radioValue =='' || radioValue == null || radioValue == undefined)
+        {
+            alertify.error("Enter gender");
+            return false;
+        }
+        else{
+
+            var params = {
+                usrName:usrName,
+                usrMobile:usrMobile,
+                usrAddress:usrAddress,
+                usrPassword:usrPassword,
+                selData:selData,
+                radioValue:radioValue
+            }
+
+
+        $.ajax({
+        url: '/updateData/data/'+id+'',
+        type: 'post',
+        dataType: 'json',
+        data: params,
+        complete: function(res) {
+            alertify.success("Data updated Successfully!");
+        }
+
+    });
+        }
+    }
+    
+</script>
+</html>

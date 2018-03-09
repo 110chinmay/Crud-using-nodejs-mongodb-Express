@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Crud table</h2>
+  <div>
+    <span>Create User:</span>
+    <input style="margin-bottom: 1%;" type="button" class="btn btn-primary" value="Create" onclick="createUsr();">
+  </div>           
+  <table class="table .table-responsive" id="table">
+    <thead>
+      <tr>
+        <th>User id</th>
+        <th>User name</th>
+        <th>User mobile</th>
+        <th>User address</th>
+        <th>User gender</th>
+        <th>User state</th>
+        <th>Update</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+ 
+      </tr>
+  </table>
+</div>
+
+</body>
+<script type="text/javascript">
+  
+  $(document).ready(function(){ 
+      $.ajax({
+        url:'/getData',
+        type:'get',
+        dataType:'json',
+        complete:function(res){
+          console.log(res.responseJSON);
+          var rows = res.responseJSON;
+          res.responseJSON.forEach(function(element) {  
+            var ids = element._id;
+
+              var html = "<table border='1|1'>";
+
+        for (var i = 0; i < rows.length; i++) {
+            html+="<tr>";
+            html+="<td>"+rows[i]._id+"</td>";
+            html+="<td>"+rows[i].usrName+"</td>";
+            html+="<td>"+rows[i].usrMobile+"</td>";
+            html+="<td>"+rows[i].usrAddress+"</td>";
+            html+="<td>"+rows[i].radioValue+"</td>";
+            html+="<td>"+rows[i].selData+"</td>";
+            html+="<td>"+"<button class='btn btn-primary' value='Update' onclick=\"(updateUsr('"+rows[i]._id+" '))\">Update</button>"+"</td>";
+
+            html+="</tr>";
+
+        }
+        html+="</table>";
+    document.getElementById("table").innerHTML = html;
+
+
+
+              $('#userId').html(element._id);
+              $('#gender').html(element.radioValue);
+              $('#state').html(element.selData);
+              $('#userAddress').html(element.usrAddress);
+              $('#userMobile').html(element.usrMobile);
+              $('#userName').html(element.usrName);
+});
+        }
+      });
+  });
+
+    function createUsr(){
+    
+            window.location.href = '/index.html';
+  }
+
+  function updateUsr(id){
+            window.location.href = '/update.html/'+id+'';
+  }
+</script>
+</html>
