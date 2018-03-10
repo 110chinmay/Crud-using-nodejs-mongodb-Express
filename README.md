@@ -1,5 +1,5 @@
 # Crud-using-nodejs-mongodb-Express
 Basic Crud with html javascript, mongodb, express, nodejs
-
-npm install
+Git Clone,
+npm install,
 node app.js
